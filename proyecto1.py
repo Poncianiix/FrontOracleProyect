@@ -76,6 +76,9 @@ def main(page: Page):
             NavigationRailDestination(
                 icon=icons.LIST_ALT,selected_icon=icons.LIST_ALT,label="Lista de prestamos",
             ),
+            NavigationRailDestination(
+                icon=icons.FORMAT_LIST_NUMBERED,selected_icon=icons.FORMAT_LIST_NUMBERED,label="Prestamos por sucursal",
+            ),
            
         ],
         #on_change=lambda e: print("Selected destination:", e.control.selected_index),
@@ -683,7 +686,7 @@ def main(page: Page):
 ##################################################################################################################################################################    
 
 ## Inicializacion de la aplicacion
-    page.scroll = "always"    
+    #page.scroll = "always"    
     page.add(
         Row(
             [
@@ -720,6 +723,7 @@ def main(page: Page):
             lv.controls.append(
                 ListTile(
                             leading=Icon(icons.WAREHOUSE),
+                            
                             title=Text("Sucursal: " + sucursales[i][1] + " - " + sucursales[i][2] + " - "+ " Region: " + str(sucursales[i][4])),
                             subtitle=Text("Cantidad de activos: " + "$" +str(sucursales[i][3])),
                    
@@ -755,6 +759,19 @@ def main(page: Page):
                             #on_click= eliminarSucursal(empleados[i]["_id"]),
                         ),
             )
+    def listarPrestamosPorSucursal():
+        response = requests.get('http://localhost:3000/prestamos/sucursal/sucursal')
+        prestamos = response.json()
+        print(prestamos)
+        for i in range(0, len(prestamos)):
+            lvDept.controls.append(
+                ListTile(
+                            leading=Icon(icons.ATTACH_MONEY),
+                            title=Text("Sucursal No: " + prestamos[i][0]),
+                            subtitle=Text("Total del prestamo: " + "$" + str(prestamos[i][1])),
+                            #on_click= eliminarSucursal(empleados[i]["_id"]),
+                        ),
+            )
             
 
 ##################################################################################################################################################################
@@ -786,6 +803,13 @@ def main(page: Page):
             page.route = "/listaPrestamos"
             limpiarCampos()
             page.update()
+        elif(index == 4):
+            lvDept.controls.clear()
+            lv.controls.clear()
+            listarPrestamosPorSucursal()
+            page.route = "/listaPrestamos"
+            limpiarCampos()
+            page.update()
 
     def routeChange(route):
         print(page.route)
@@ -796,6 +820,7 @@ def main(page: Page):
                     [
                         rail,
                         VerticalDivider(width=1),
+                        
                         Column([  
                             Container(width=1000,height=30,padding=padding.only(left=50,top=1)),
                             Container(content=txtIdSuc, width=1000,height=80,padding=padding.only(left=50,top=1)),
@@ -851,6 +876,22 @@ def main(page: Page):
                 )
             )
         if(page.route == "/listaPrestamos"):
+ 
+            page.clean()
+            page.add(
+                Row(
+                    [
+                        rail,
+                        VerticalDivider(width=1),
+                        Column([  
+                            Container(content=lvDept, width=1000,height = 900, padding=padding.only(left=50,top=1,bottom=200)),
+                        ],spacing=10,),
+
+                    ],
+                    height=1000,
+                )
+            )
+        if(page.route == "/listaPrestamosPorSucursal"):
  
             page.clean()
             page.add(
