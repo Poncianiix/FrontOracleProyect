@@ -16,6 +16,7 @@
   display: flex;
   flex: 1;
   padding: 2rem 0;
+  color: white;
   border-top: 1px solid #eaeaea;
   justify-content: center;
   align-items: center;
@@ -104,8 +105,13 @@
 }
 
 .logo {
-  height: 1em;
   margin-left: 0.5rem;
+  font-weight: 700;
+  transition: .2s;
+}
+
+.logo:hover{
+  transform: scale(1.04);
 }
 
 @media (max-width: 600px) {
