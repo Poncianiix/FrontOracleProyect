@@ -59,6 +59,7 @@ const TablaSucursales = () => {
                 }
               };   
               const response = await axios(config);
+              obtenerdatos();
               setAgrega(false);
         } catch (error) {
         console.log(error);
@@ -92,8 +93,7 @@ const TablaSucursales = () => {
                     };
 
                     const response = await axios(config);
-                    setAgrega(true);
-                    setAgrega(false);
+                    obtenerdatos();
                     swal.fire(
                         '¡Eliminado!',
                         'La sucursal ha sido eliminada.',
@@ -146,8 +146,7 @@ const TablaSucursales = () => {
                 };
 
                 const response = await axios(config);
-                setAgrega(true);
-                setAgrega(false);
+                obtenerdatos();
                 swal.fire(
                     'Actualizada!',
                     'La sucursal ha sido actualizada.',
